@@ -54,10 +54,15 @@ def clear():
     betweenspeakerscat.set(0)
     noswitchingcat.set(0)
     unsure3cat.set(0)
+    adultmalecat.set(0)
+    adultfemalecat.set(0)
     targetchildcat.set(0)
     otherchildcat.set(0)
-    adultcat.set(0)
     unsure4cat.set(0)
+    targetchild2cat.set(0)
+    otherchild2cat.set(0)
+    adultcat.set(0)
+    unsure5cat.set(0)
 
 
     comments.delete(0, 'end')
@@ -166,21 +171,26 @@ def next_audio():
     betweenspeakers = betweenspeakerscat.get()
     noswitching = noswitchingcat.get()
     unsure3 = unsure3cat.get()
-    targetchild = targetchildcat.get() 
+    adultmale = adultmalecat.get()
+    adultfemale = adultfemalecat.get()
+    targetchild = targetchildcat.get()
     otherchild = otherchildcat.get()
-    adult = adultcat.get()
     unsure4 = unsure4cat.get()
+    targetchild2 = targetchild2cat.get() 
+    otherchild2 = otherchild2cat.get()
+    adult = adultcat.get()
+    unsure5 = unsure5cat.get()
 
     clip_comments = comments.get()
 
 
 
     annotate_date_YYYYMMDD = datetime.datetime.now() # get current annotation time
-    print(beginoptions, english, spanish, unsure, mostlyenglish, mostlyspanish, equal, unsure2, withinspeaker, betweenspeakers, noswitching, unsure3, targetchild, otherchild, adult, unsure4, annotate_date_YYYYMMDD, content, clip_comments) 
+    print(beginoptions, english, spanish, unsure, mostlyenglish, mostlyspanish, equal, unsure2, withinspeaker, betweenspeakers, noswitching, unsure3, adultmale, adultfemale, targetchild, otherchild, unsure4, targetchild2, otherchild2, adult, unsure5, annotate_date_YYYYMMDD, content, clip_comments) 
 
     global row
     global resp_df
-    allcols = pd.DataFrame([row]).assign(beginoptions=beginoptions, Q1_English=english, Q1_Spanish=spanish, Q1_Unsure=unsure, Q2_MostlyEnglish=mostlyenglish, Q2_MostlySpanish=mostlyspanish, Q2_Equal=equal, Q2_Unsure=unsure2, Q3_Within=withinspeaker, Q3_Between=betweenspeakers, Q3_Unsure=unsure3, Q4_TargetChild=targetchild, Q4_OtherChild=otherchild, Q4_Adult=adult, Q4_Unsure=unsure4, comments=clip_comments, annotate_date_YYYYMMDD=annotate_date_YYYYMMDD, annotator=content, repeats=repeat_ct) 
+    allcols = pd.DataFrame([row]).assign(beginoptions=beginoptions, Q1_English=english, Q1_Spanish=spanish, Q1_Unsure=unsure, Q2_MostlyEnglish=mostlyenglish, Q2_MostlySpanish=mostlyspanish, Q2_Equal=equal, Q2_Unsure=unsure2, Q3_Within=withinspeaker, Q3_Between=betweenspeakers, Q3_Unsure=unsure3, Q4_AdultMale = adultmale, Q4_AdultFemale = adultfemale, Q4_TargetChild=targetchild, Q4_OtherChild=otherchild, Q4_Unsure=unsure4, Q5_TargetChild = targetchild2, Q5_OtherChild = otherchild2, Q5_Adult = adult, Q5_Unsure = unsure5, comments=clip_comments, annotate_date_YYYYMMDD=annotate_date_YYYYMMDD, annotator=content, repeats=repeat_ct) 
     resp_df = pd.concat([resp_df, allcols], sort=True)
     resp_df.to_csv(os.path.join(outdir, "responses.csv"), index=False)  # yes, this overwrites responses.csv each time  
 
@@ -217,10 +227,15 @@ def main():
     global betweenspeakerscat
     global noswitchingcat
     global unsure3cat
+    global adultmalecat
+    global adultfemalecat
     global targetchildcat
     global otherchildcat
-    global adultcat
     global unsure4cat
+    global targetchild2cat
+    global otherchild2cat
+    global adultcat
+    global unsure5cat
 
     root = tk.Tk() # refers to annotation window 
 
@@ -302,25 +317,49 @@ def main():
     tk.Checkbutton(frame, text='Unsure', variable=unsure3cat).grid(row=15, column=4)
 
 
-# Classify addressee(s) used in clip: 
+# Classify speaker(s) in clip: 
 
-    tk.Label(frame, font=fontStyle, text="4. Classify Addressee(s)").grid(row=16, column=0)
+    tk.Label(frame, font=fontStyle, text="4. Classify Speaker(s)").grid(row=16, column=0)
 
-    tk.Label(frame, text="The speech in this clip is addressed to:").grid(row=19, column=0)
+    tk.Label(frame, text="The speech in this clip is spoken by:").grid(row=19, column=0)
     
-    targetchildcat = tk.IntVar()
-    tk.Checkbutton(frame, text='Target Child', variable=targetchildcat).grid(row=19, column=1)
+    adultmalecat = tk.IntVar()
+    tk.Checkbutton(frame, text='Adult Male', variable=adultmalecat).grid(row=19, column=1)
 
+
+    adultfemalecat = tk.IntVar()
+    tk.Checkbutton(frame, text='Adult Female', variable=adultfemalecat).grid(row=19, column=2)
+
+
+    targetchildcat = tk.IntVar()
+    tk.Checkbutton(frame, text='Target Child', variable=targetchildcat).grid(row=19, column=3)
 
     otherchildcat = tk.IntVar()
-    tk.Checkbutton(frame, text='Other Child(ren)', variable=otherchildcat).grid(row=19, column=2)
+    tk.Checkbutton(frame, text='Other Child(ren)', variable=otherchildcat).grid(row=19, column=4)
+
+    unsure4cat = tk.IntVar()
+    tk.Checkbutton(frame, text='Unsure', variable=unsure4cat).grid(row=19, column=5)
+
+
+# Classify addressee(s) used in clip: 
+
+    tk.Label(frame, font=fontStyle, text="5. Classify Addressee(s)").grid(row=20, column=0)
+
+    tk.Label(frame, text="The speech in this clip is addressed to:").grid(row=23, column=0)
+    
+    targetchild2cat = tk.IntVar()
+    tk.Checkbutton(frame, text='Target Child', variable=targetchild2cat).grid(row=23, column=1)
+
+
+    otherchild2cat = tk.IntVar()
+    tk.Checkbutton(frame, text='Other Child(ren)', variable=otherchild2cat).grid(row=23, column=2)
 
 
     adultcat = tk.IntVar()
-    tk.Checkbutton(frame, text='Adult(s)', variable=adultcat).grid(row=19, column=3)
+    tk.Checkbutton(frame, text='Adult(s)', variable=adultcat).grid(row=23, column=3)
 
-    unsure4cat = tk.IntVar()
-    tk.Checkbutton(frame, text='Unsure', variable=unsure4cat).grid(row=19, column=4)
+    unsure5cat = tk.IntVar()
+    tk.Checkbutton(frame, text='Unsure', variable=unsure5cat).grid(row=23, column=4)
     
 
     
