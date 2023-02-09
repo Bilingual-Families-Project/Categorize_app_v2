@@ -45,6 +45,7 @@ def clear():
  
     englishcat.set(0)
     spanishcat.set(0)
+    mixedcat.set(0)
     unsurecat.set(0)
     mostlyenglishcat.set(0)
     mostlyspanishcat.set(0)
@@ -162,6 +163,7 @@ def next_audio():
     
     english = englishcat.get() 
     spanish = spanishcat.get() 
+    mixed = mixedcat.get()
     unsure = unsurecat.get() 
     mostlyenglish = mostlyenglishcat.get()
     mostlyspanish = mostlyspanishcat.get()
@@ -186,11 +188,11 @@ def next_audio():
 
 
     annotate_date_YYYYMMDD = datetime.datetime.now() # get current annotation time
-    print(beginoptions, english, spanish, unsure, mostlyenglish, mostlyspanish, equal, unsure2, withinspeaker, betweenspeakers, noswitching, unsure3, adultmale, adultfemale, targetchild, otherchild, unsure4, targetchild2, otherchild2, adult, unsure5, annotate_date_YYYYMMDD, content, clip_comments) 
+    print(beginoptions, english, spanish, mixed, unsure, mostlyenglish, mostlyspanish, equal, unsure2, withinspeaker, betweenspeakers, noswitching, unsure3, adultmale, adultfemale, targetchild, otherchild, unsure4, targetchild2, otherchild2, adult, unsure5, annotate_date_YYYYMMDD, content, clip_comments) 
 
     global row
     global resp_df
-    allcols = pd.DataFrame([row]).assign(beginoptions=beginoptions, Q1_English=english, Q1_Spanish=spanish, Q1_Unsure=unsure, Q2_MostlyEnglish=mostlyenglish, Q2_MostlySpanish=mostlyspanish, Q2_Equal=equal, Q2_Unsure=unsure2, Q3_Within=withinspeaker, Q3_Between=betweenspeakers, Q3_Unsure=unsure3, Q4_AdultMale = adultmale, Q4_AdultFemale = adultfemale, Q4_TargetChild=targetchild, Q4_OtherChild=otherchild, Q4_Unsure=unsure4, Q5_TargetChild = targetchild2, Q5_OtherChild = otherchild2, Q5_Adult = adult, Q5_Unsure = unsure5, comments=clip_comments, annotate_date_YYYYMMDD=annotate_date_YYYYMMDD, annotator=content, repeats=repeat_ct) 
+    allcols = pd.DataFrame([row]).assign(beginoptions=beginoptions, Q1_English=english, Q1_Spanish=spanish, Q1_Mixed=mixed, Q1_Unsure=unsure, Q2_MostlyEnglish=mostlyenglish, Q2_MostlySpanish=mostlyspanish, Q2_Equal=equal, Q2_Unsure=unsure2, Q3_Within=withinspeaker, Q3_Between=betweenspeakers, Q3_Unsure=unsure3, Q4_AdultMale = adultmale, Q4_AdultFemale = adultfemale, Q4_TargetChild=targetchild, Q4_OtherChild=otherchild, Q4_Unsure=unsure4, Q5_TargetChild = targetchild2, Q5_OtherChild = otherchild2, Q5_Adult = adult, Q5_Unsure = unsure5, comments=clip_comments, annotate_date_YYYYMMDD=annotate_date_YYYYMMDD, annotator=content, repeats=repeat_ct) 
     resp_df = pd.concat([resp_df, allcols], sort=True)
     resp_df.to_csv(os.path.join(outdir, "responses.csv"), index=False)  # yes, this overwrites responses.csv each time  
 
@@ -217,6 +219,7 @@ def main():
     global beginoptionscat
     global englishcat
     global spanishcat
+    global mixedcat
     global unsurecat
     global comments
     global mostlyenglishcat
@@ -273,8 +276,11 @@ def main():
     spanishcat = tk.IntVar()
     tk.Checkbutton(frame, text='Spanish', variable=spanishcat).grid(row=7, column=2)
 
+    mixedcat = tk.IntVar()
+    tk.Checkbutton(frame, text='Mixed', variable=mixedcat).grid(row=7, column=3)
+
     unsurecat = tk.IntVar()
-    tk.Checkbutton(frame, text='Unsure', variable=unsurecat).grid(row=7, column=3)
+    tk.Checkbutton(frame, text='Unsure', variable=unsurecat).grid(row=7, column=4)
 
 
 # Classify approximate proportion of each langauge used in clip: 
